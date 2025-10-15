@@ -1,0 +1,14 @@
+{
+  "domain": "siegenia",
+  "name": "Siegenia (alpha)",
+  "version": "0.7.0",
+  "documentation": "https://github.com/Apollon77/ioBroker.siegenia",
+  "issue_tracker": "https://github.com/Apollon77/ioBroker.siegenia",
+  "requirements": [],
+  "dependencies": [],
+  "codeowners": [
+    "@chatgpt"
+  ],
+  "iot_class": "local_push",
+  "config_flow": true
+}
