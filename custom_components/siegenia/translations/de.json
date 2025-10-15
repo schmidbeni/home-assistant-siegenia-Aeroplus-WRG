@@ -1,0 +1,21 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Verbindung mit Siegenia-Gerät",
+        "description": "Geben Sie die IP-Adresse/Hostname und Anmeldedaten ein (die gleichen wie in der SIEGENIA-App).",
+        "data": {
+          "host": "Hostname oder IP-Adresse",
+          "username": "Benutzername",
+          "password": "Passwort",
+          "port": "Port",
+          "ssl": "SSL verwenden (wss)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung fehlgeschlagen. Überprüfen Sie IP/Port/Anmeldedaten."
+    },
+    "abort": {}
+  }
+}
