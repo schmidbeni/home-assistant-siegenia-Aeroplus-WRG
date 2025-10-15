@@ -119,8 +119,7 @@ logger:
 
 ## Support
 
-For bugs, feature requests, and discussion:
-- [Issue Tracker](https://github.com/Apollon77/ioBroker.siegenia)
+Software is provided as is, if there are issues, solve them yourself, and feel free to push back here to share with the rest.
 
 ## License
 
