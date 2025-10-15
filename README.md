@@ -1,7 +1,5 @@
 # Siegenia for Home Assistant
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
-
 A Home Assistant integration to control and monitor Siegenia Aeroplus WRG smart ventilation devices with Co2 sensor.
 Vibe coded, based on the awesome work for iobroker here: https://github.com/Apollon77/ioBroker.siegenia 
 
