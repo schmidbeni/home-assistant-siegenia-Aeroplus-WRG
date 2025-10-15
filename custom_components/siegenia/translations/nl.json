@@ -1,0 +1,21 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Verbind met Siegenia apparaat",
+        "description": "Voer het IP-adres/hostnaam en inloggegevens in (dezelfde als in de SIEGENIA app).",
+        "data": {
+          "host": "Hostnaam of IP-adres",
+          "username": "Gebruikersnaam",
+          "password": "Wachtwoord",
+          "port": "Poort",
+          "ssl": "Gebruik SSL (wss)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbinding mislukt. Controleer IP/poort/inloggegevens."
+    },
+    "abort": {}
+  }
+}
