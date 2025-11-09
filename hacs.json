@@ -1,6 +1,5 @@
 {
   "name": "Siegenia (Airoplus)",
   "zip_release": true,
-  "render_readme": true,
-  "filename": "home-assistant-siegenia-Aeroplus-WRG-main.zip"
+  "render_readme": true
 }

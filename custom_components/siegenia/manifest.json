@@ -1,14 +1,15 @@
 {
   "domain": "siegenia",
-  "name": "Siegenia (Airflow)",
-  "version": "0.8.0",
+  "name": "Siegenia (Airoplus)",
+  "version": "0.8.1",
   "documentation": "https://github.com/schmidbeni/home-assistant-siegenia-Aeroplus-WRG",
   "issue_tracker": "https://github.com/schmidbeni/home-assistant-siegenia-Aeroplus-WRG/issues",
   "requirements": [],
   "dependencies": [],
   "codeowners": [
-    "@rikbootsman"
+    "@rikbootsman",
+    "@schmidbeni"
   ],
-  "iot_class": "local_push",
+  "iot_class": "local_polling",
   "config_flow": true
 }
