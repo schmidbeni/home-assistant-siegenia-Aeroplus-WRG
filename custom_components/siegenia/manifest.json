@@ -1,9 +1,9 @@
 {
   "domain": "siegenia",
-  "name": "Siegenia (alpha)",
-  "version": "0.7.0",
-  "documentation": "https://github.com/rikbootsman/home-assistant-siegenia-Aeroplus-WRG",
-  "issue_tracker": "https://github.com/rikbootsman/home-assistant-siegenia-Aeroplus-WRG/issues",
+  "name": "Siegenia (Airflow)",
+  "version": "0.8.0",
+  "documentation": "https://github.com/schmidbeni/home-assistant-siegenia-Aeroplus-WRG",
+  "issue_tracker": "https://github.com/schmidbeni/home-assistant-siegenia-Aeroplus-WRG/issues",
   "requirements": [],
   "dependencies": [],
   "codeowners": [
