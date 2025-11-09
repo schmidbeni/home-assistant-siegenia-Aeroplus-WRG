@@ -11,10 +11,10 @@ from homeassistant.config_entries import ConfigEntry
 from .const import DOMAIN, DATA_COORDINATOR
 
 UNIT_MAP = {
-    "humidity.indoor": "%",
-    "humidity.outdoor": "%",
-    "temperature.indoor": "°C",
-    "temperature.outdoor": "°C",
+    "airbase.humidity.indoor": "%",
+    "airbase.humidity.outdoor": "%",
+    "airbase.temperature.indoor": "°C",
+    "airbase.temperature.outdoor": "°C",
     "co2_value": "ppm",
     "fanmode": None,
     "maxfanpower": None,
