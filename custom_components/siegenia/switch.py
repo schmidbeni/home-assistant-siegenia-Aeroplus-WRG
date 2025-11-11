@@ -61,7 +61,7 @@ class SiegeniaAutoModeSwitch(CoordinatorEntity, SwitchEntity):
         await self._client.set_device_params({"automode": False, "auto_mode": False})
         await self.coordinator.async_request_refresh()
 
-# Device active Switch
+# Device active Switch added
 class SiegeniaDeviceActiveSwitch(CoordinatorEntity, SwitchEntity):
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
         coord = hass.data[DOMAIN][entry.entry_id][DATA_COORDINATOR]
