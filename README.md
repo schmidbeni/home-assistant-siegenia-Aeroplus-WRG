@@ -37,7 +37,6 @@ Vibe coded, based on the awesome work for iobroker here: https://github.com/Apol
 - System Name
 - Connection Status
 - **Siegenia Online** (Binary Sensor): WebSocket connection status
-- **Siegenia Raw State**: Diagnostic sensor showing complete device state
 
 ## Installation
 

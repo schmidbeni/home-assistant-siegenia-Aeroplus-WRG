@@ -53,7 +53,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
         if key in flat:
             entities.append(SiegeniaKeySensor(coordinator, base_id, key, unit))
 
-    entities.append(SiegeniaRawStateSensor(coordinator, base_id))
+    #entities.append(SiegeniaRawStateSensor(coordinator, base_id))
     async_add_entities(entities)
 
 class SiegeniaKeySensor(CoordinatorEntity, SensorEntity):
