@@ -93,9 +93,9 @@ class SiegeniaDeviceActiveSwitch(CoordinatorEntity, SwitchEntity):
         return bool(d.get("deviceactive", d.get("device_active", False)))
 
     async def async_turn_on(self, **kwargs: Any) -> None:
-        await self._client.set_device_params({"deviceactive": True, "device_active": True})
+        await self._client.set_device_params({"devicestate":{"deviceactive": True}})
         await self.coordinator.async_request_refresh()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
-        await self._client.set_device_params({"deviceactive": False, "device_active": False})
+        await self._client.set_device_params({"devicestate":{"deviceactive": False}})
         await self.coordinator.async_request_refresh()
