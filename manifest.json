@@ -1,0 +1,15 @@
+{
+  "domain": "siegenia",
+  "name": "Siegenia (Airoplus)",
+  "codeowners": [
+    "@rikbootsman",
+    "@schmidbeni"
+  ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/schmidbeni/home-assistant-siegenia-Aeroplus-WRG",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/schmidbeni/home-assistant-siegenia-Aeroplus-WRG/issues",
+  "requirements": [],  
+  "version": "0.8.5"
+}

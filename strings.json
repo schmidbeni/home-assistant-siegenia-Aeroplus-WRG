@@ -1,0 +1,21 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Siegenia device",
+        "description": "Enter device IP/host and credentials (same as the SIEGENIA app).",
+        "data": {
+          "host": "Host or IP",
+          "username": "Username",
+          "password": "Password",
+          "port": "Port",
+          "ssl": "Use SSL (wss)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect. Check IP/port/credentials."
+    },
+    "abort": {}
+  }
+}
