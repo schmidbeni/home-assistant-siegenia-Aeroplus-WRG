@@ -53,7 +53,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
         if key in flat:
             entities.append(SiegeniaKeySensor(coordinator, entry, key, unit))
 
-    #entities.append(SiegeniaRawStateSensor(coordinator, entry))
     async_add_entities(entities)
 
 class SiegeniaKeySensor(CoordinatorEntity, SensorEntity):
@@ -113,47 +112,3 @@ class SiegeniaKeySensor(CoordinatorEntity, SensorEntity):
             return out
         flat.update(_flatten_in(combined))
         return flat.get(self._key)
-
-class SiegeniaRawStateSensor(CoordinatorEntity, SensorEntity):
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-    _attr_icon = "mdi:code-json"
-
-    def __init__(self, coordinator, entry: ConfigEntry) -> None:
-        super().__init__(coordinator)
-        self._entry = entry
-        system_name = self._get_system_name()
-        self._attr_name = f"{system_name} Raw State" if system_name else "Siegenia Raw State"
-        self._attr_unique_id = f"{entry.entry_id}-raw-state"
-    
-    @property
-    def device_info(self):
-        """Return device information to link this entity with the device."""
-        system_name = self._get_system_name()
-        return {
-            "identifiers": {(DOMAIN, self._entry.entry_id)},
-            "name": system_name if system_name else "Siegenia Airoplus",
-            "manufacturer": "Siegenia",
-            "model": "Airoplus WRG Smart",
-        }
-        
-    def _get_system_name(self) -> str | None:
-        """Get the system name from device info."""
-        data = self.coordinator.data or {}
-        for part in ("state", "params", "info"):
-            d = data.get(part) or {}
-            if isinstance(d, dict):
-                system_name = d.get("systemname") or d.get("device_name")
-                if system_name:
-                    return system_name
-        return None
-
-    @property
-    def native_value(self) -> str:
-        from json import dumps
-        data = self.coordinator.data or {}
-        combined = {}
-        for part in ("state", "params", "info"):
-            d = data.get(part) or {}
-            if isinstance(d, dict):
-                combined.update(d)
-        return dumps(combined, ensure_ascii=False)
