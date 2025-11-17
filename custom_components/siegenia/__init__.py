@@ -4,6 +4,7 @@ from datetime import timedelta
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+from homeassistant.helpers import device_registry as dr
 from .const import (
     DOMAIN,
     PLATFORMS,
@@ -62,6 +63,27 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     )
     
     await coordinator.async_config_entry_first_refresh()
+    
+    # Device Registry aktualisieren mit Seriennummer und Firmware
+    device_registry = dr.async_get(hass)
+    info = coordinator.data.get("info", {})
+    
+    # Extrahieren Sie die Werte aus Ihrer API-Antwort
+    # Passen Sie die Schlüsselnamen an Ihre tatsächliche API-Struktur an
+    serial_number = info.get("serialnr")
+    firmware_version = info.get("softwareversion")
+    model = info.get("model") or info.get("type") or "Siegenia Device"
+    device_name = info.get("name") or f"Siegenia {host}"
+    
+    device_registry.async_get_or_create(
+        config_entry_id=entry.entry_id,
+        identifiers={(DOMAIN, entry.entry_id)},
+        name=device_name,
+        manufacturer="Siegenia",
+        model=model,
+        sw_version=firmware_version,
+        serial_number=serial_number,
+    )
     
     try:
         client.set_on_push(lambda _data: hass.async_create_task(coordinator.async_request_refresh()))
