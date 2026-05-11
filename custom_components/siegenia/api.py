@@ -82,17 +82,37 @@ class SiegeniaClient:
             self._heartbeat_task = asyncio.create_task(self._heartbeat())
             _LOGGER.debug("WS connected")
 
-    async def _receiver(self) -> None:
-        assert self._ws is not None
-        ws = self._ws
-        async for msg in ws:
-            if msg.type == WSMsgType.TEXT:
+async def _receiver(self) -> None:
+    assert self._ws is not None
+    ws = self._ws
+    async for msg in ws:
+        if msg.type == WSMsgType.TEXT:
+            # Handle multiple JSON objects in one message
+            raw_data = msg.data.strip()
+            
+            # Try to parse multiple JSON objects
+            json_objects = []
+            decoder = json.JSONDecoder()
+            idx = 0
+            
+            while idx < len(raw_data):
+                # Skip whitespace
+                while idx < len(raw_data) and raw_data[idx].isspace():
+                    idx += 1
+                
+                if idx >= len(raw_data):
+                    break
+                
                 try:
-                    data = json.loads(msg.data)
-                except Exception as exc:
-                    _LOGGER.warning("WS JSON error: %s (%s)", exc, msg.data)
-                    continue
-
+                    obj, end_idx = decoder.raw_decode(raw_data, idx)
+                    json_objects.append(obj)
+                    idx += end_idx
+                except json.JSONDecodeError as exc:
+                    _LOGGER.warning("WS JSON error: %s (at position %d in: %s)", exc, idx, raw_data)
+                    break
+            
+            # Process each JSON object
+            for data in json_objects:
                 rid = data.get("id")
                 status = data.get("status")
                 payload = data.get("data")
@@ -106,17 +126,18 @@ class SiegeniaClient:
                             self.on_push(data)
                     except Exception as _exc:
                         _LOGGER.debug("on_push callback error: %s", _exc)
-            elif msg.type in (WSMsgType.CLOSE, WSMsgType.CLOSED, WSMsgType.ERROR):
-                _LOGGER.debug("WS closed: %s", msg.type)
-                break
+                        
+        elif msg.type in (WSMsgType.CLOSE, WSMsgType.CLOSED, WSMsgType.ERROR):
+            _LOGGER.debug("WS closed: %s", msg.type)
+            break
 
-        # mark closed
-        try:
-            if self._ws and not self._ws.closed:
-                await self._ws.close()
-        except Exception:
-            pass
-        self._ws = None
+    # mark closed
+    try:
+        if self._ws and not self._ws.closed:
+            await self._ws.close()
+    except Exception:
+        pass
+    self._ws = None
 
     async def close(self) -> None:
         if self._heartbeat_task:
