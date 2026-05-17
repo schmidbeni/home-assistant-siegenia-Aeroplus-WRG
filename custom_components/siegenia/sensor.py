@@ -5,6 +5,7 @@ from typing import Any, Dict
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.config_entries import ConfigEntry
 
@@ -16,11 +17,6 @@ UNIT_MAP = {
     "airbase.humidity.outdoor": "%",
     "airbase.temperature.indoor": "°C",
     "airbase.temperature.outdoor": "°C",
-    "airquality.co2content": "ppm",
-    "humidity.indoor": "%",
-    "humidity.outdoor": "%",
-    "temperature.indoor": "°C",
-    "temperature.outdoor": "°C",
     "co2_value": "ppm",
     "fanmode": None,
     "maxfanpower": None,
@@ -58,7 +54,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
         if key in flat:
             entities.append(SiegeniaKeySensor(coordinator, entry, key, unit))
 
-    entities.append(SiegeniaRawStateSensor(coordinator, entry))
     async_add_entities(entities)
 
 class SiegeniaKeySensor(CoordinatorEntity, SensorEntity):
@@ -74,12 +69,17 @@ class SiegeniaKeySensor(CoordinatorEntity, SensorEntity):
         self._attr_unique_id = f"{entry.entry_id}-{slug}"
         if unit:
             self._attr_native_unit_of_measurement = unit
-
+    
     @property
     def device_info(self):
-        return build_device_info(
-            self.coordinator.data, self._entry.entry_id, self._entry.data.get("host")
-        )
+        """Return device information to link this entity with the device."""
+        system_name = self._get_system_name()
+        return {
+            "identifiers": {(DOMAIN, self._entry.entry_id)},
+            "name": system_name if system_name else "Siegenia Airoplus",
+            "manufacturer": "Siegenia",
+            "model": "Airoplus WRG Smart",
+        }
             
     def _get_system_name(self) -> str | None:
         """Get the system name from device info."""
@@ -113,42 +113,3 @@ class SiegeniaKeySensor(CoordinatorEntity, SensorEntity):
             return out
         flat.update(_flatten_in(combined))
         return flat.get(self._key)
-
-class SiegeniaRawStateSensor(CoordinatorEntity, SensorEntity):
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-    _attr_icon = "mdi:code-json"
-
-    def __init__(self, coordinator, entry: ConfigEntry) -> None:
-        super().__init__(coordinator)
-        self._entry = entry
-        system_name = self._get_system_name()
-        self._attr_name = f"{system_name} Raw State" if system_name else "Siegenia Raw State"
-        self._attr_unique_id = f"{entry.entry_id}-raw-state"
-        
-    def _get_system_name(self) -> str | None:
-        """Get the system name from device info."""
-        data = self.coordinator.data or {}
-        for part in ("state", "params", "info"):
-            d = data.get(part) or {}
-            if isinstance(d, dict):
-                system_name = d.get("systemname") or d.get("device_name")
-                if system_name:
-                    return system_name
-        return None
-
-    @property
-    def device_info(self):
-        return build_device_info(
-            self.coordinator.data, self._entry.entry_id, self._entry.data.get("host")
-        )
-
-    @property
-    def native_value(self) -> str:
-        from json import dumps
-        data = self.coordinator.data or {}
-        combined = {}
-        for part in ("state", "params", "info"):
-            d = data.get(part) or {}
-            if isinstance(d, dict):
-                combined.update(d)
-        return dumps(combined, ensure_ascii=False)
