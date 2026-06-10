@@ -72,10 +72,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     
     # Extrahieren Sie die Werte aus Ihrer API-Antwort
     # Passen Sie die Schlüsselnamen an Ihre tatsächliche API-Struktur an
-    serial_number = info.get("serialnr")
-    firmware_version = info.get("softwareversion")
-    model = info.get("model") or info.get("type") or "Siegenia Device"
-    device_name = info.get("name") or f"Siegenia {host}"
+    serial_number = str(info.get("serialnr")) if info.get("serialnr") is not None else None
+    firmware_version = str(info.get("softwareversion")) if info.get("softwareversion") is not None else None
+    model = str(info.get("model") or info.get("type") or "Siegenia Device")
+    device_name = str(info.get("name") or f"Siegenia {host}")
     
     device_registry.async_get_or_create(
         config_entry_id=entry.entry_id,
